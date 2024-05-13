@@ -7,17 +7,17 @@ import (
 )
 
 type ApiHandler struct {
-	dbStore database.DynamoDBClient
+	dbStore database.UserStore
 }
 
-func NewApiHandler(dbStore database.DynamoDBClient) ApiHandler {
+func NewApiHandler(dbStore database.UserStore) ApiHandler {
 	return ApiHandler{
 		dbStore: dbStore,
 	}
 }
 
 func (api ApiHandler) RegisterUserHandler(event types.RegisterUser) error {
-	if event.Username == "" || event.Username == "" {
+	if event.Username == "" || event.Password == "" {
 		return fmt.Errorf("Invalid request: Username or password is empty")
 	}
 

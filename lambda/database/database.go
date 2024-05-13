@@ -16,6 +16,12 @@ type DynamoDBClient struct {
 	databaseStore *dynamodb.DynamoDB
 }
 
+// TODO: Refactor interface to own file
+type UserStore interface {
+	DoesUserExist(username string) (bool, error)
+	InsertUser(user types.RegisterUser) error
+}
+
 func NewDynamoDBClient() DynamoDBClient {
 	dbSession := session.Must(session.NewSession())
 
