@@ -25,6 +25,6 @@ func HandleRequest(event MyEvent) (string, error) {
 // zip function.zip bootstrap
 
 func main() {
-	_ = app.NewApp()
-	lambda.Start(HandleRequest)
+	myApp := app.NewApp()
+	lambda.Start(myApp.ApiHandler.RegisterUserHandler)
 }
