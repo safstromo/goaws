@@ -46,7 +46,7 @@ func (u DynamoDBClient) DoesUserExist(username string) (bool, error) {
 	return true, nil
 }
 
-func (u DynamoDBClient) InsertUser(user types.RegisterUser) err {
+func (u DynamoDBClient) InsertUser(user types.RegisterUser) error {
 	// assemble item
 	// TODO: encrypt
 	item := &dynamodb.PutItemInput{
