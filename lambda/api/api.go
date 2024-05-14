@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 type ApiHandler struct {
@@ -108,8 +107,11 @@ func (api ApiHandler) LoginUser(request events.APIGatewayProxyRequest) (events.A
 		}, nil
 	}
 
+	accessToken := types.CreateToken(user)
+	successMsg := fmt.Sprintf(`{"access_token": "%s"}`, accessToken)
+
 	return events.APIGatewayProxyResponse{
-		Body:       "Successfully logged in",
+		Body:       successMsg,
 		StatusCode: http.StatusOK,
 	}, nil
 }

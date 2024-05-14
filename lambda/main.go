@@ -1,8 +1,13 @@
 package main
 
+// Build command
+// GOOS=linux GOARCH=amd64 go build -o bootstrap
+// zip function.zip bootstrap
+
 import (
 	"fmt"
 	"lamda-func/app"
+	"lamda-func/middleware"
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -22,9 +27,12 @@ func HandleRequest(event MyEvent) (string, error) {
 	return fmt.Sprintf("Successfully called by - %s", event.Username), nil
 }
 
-// Build command
-// GOOS=linux GOARCH=amd64 go build -o bootstrap
-// zip function.zip bootstrap
+func ProtectedHandler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	return events.APIGatewayProxyResponse{
+		Body:       "This is a protected route",
+		StatusCode: http.StatusOK,
+	}, nil
+}
 
 func main() {
 	myApp := app.NewApp()
@@ -34,6 +42,8 @@ func main() {
 			return myApp.ApiHandler.RegisterUserHandler(request)
 		case "/login":
 			return myApp.ApiHandler.LoginUser(request)
+		case "/protected":
+			return middleware.ValidateJWTMiddleware(ProtectedHandler)(request)
 		default:
 			return events.APIGatewayProxyResponse{
 				Body:       "Not Found",

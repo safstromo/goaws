@@ -10,6 +10,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// Lib like Chi will do this
 func ValidateJWTMiddleware(next func(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error)) func(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	return func(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 		tokenString := extractTokenFromHeaders(request.Headers)
@@ -57,9 +58,12 @@ func extractTokenFromHeaders(headers map[string]string) string {
 	return splitToken[1]
 }
 
-func parseToken(tokenString string) (jwt.MapClaim, error) {
+func parseToken(tokenString string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
 		secret := "superSecret"
+
+		// TODO: Check Agl
+
 		return []byte(secret), nil
 	})
 	if err != nil {

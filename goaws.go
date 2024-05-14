@@ -58,6 +58,9 @@ func NewGoawsStack(scope constructs.Construct, id string, props *GoawsStackProps
 	loginRoute := api.Root().AddResource(jsii.String("login"), nil)
 	loginRoute.AddMethod(jsii.String("POST"), intergration, nil)
 
+	protectedRoute := api.Root().AddResource(jsii.String("protected"), nil)
+	protectedRoute.AddMethod(jsii.String("GET"), intergration, nil)
+
 	return stack
 }
 
