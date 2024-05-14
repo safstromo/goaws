@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type ApiHandler struct {
